@@ -70,26 +70,20 @@ const getuserNotes = async(req, res) => {
 const updateNote = async (req, res) => {
     try {
         const noteId = req.params.id;
-        const userId = req.user.id; 
+        const userId = req.user.userId; 
 
-        // Validate if noteId and userId are valid MongoDB ObjectIds
-        if (!mongoose.Types.ObjectId.isValid(noteId)) {
-            return res.status(400).json({ message: 'Invalid note ID format.' });
-        }
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid user ID format.' });
-        }
+        
 
         const { title, description, completed } = req.body;
-        const updateFields = { updatedAt: Date.now() };
+        const updateFields = {};
 
-        if (title !== undefined) updateFields.title = title;
+        if (title !== undefined) updateFields.title = title;        
         if (description !== undefined) updateFields.description = description;
         if (completed !== undefined) updateFields.completed = completed;
 
         
         const updatedNote = await Note.findOneAndUpdate(
-            { _id: noteId, user: userId }, // Query: match noteId AND userId
+            { _id: noteId, user:  userId}, // Query: match noteId AND userId
             { $set: updateFields },        // Update fields
             { new: true }                  // Return the updated document
         );
@@ -114,12 +108,7 @@ const deleteNote = async (req, res) => {
         const userId = req.user.id; // Authenticated user ID
 
         // Validate if noteId and userId are valid MongoDB ObjectIds
-        if (!mongoose.Types.ObjectId.isValid(noteId)) {
-            return res.status(400).json({ message: 'Invalid note ID format.' });
-        }
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid user ID format.' });
-        }
+        
 
         // Find the note by its ID AND ensure it belongs to the authenticated user before deleting
         const deletedNote = await Note.findOneAndDelete({ _id: noteId, user: userId });

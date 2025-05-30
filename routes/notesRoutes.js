@@ -11,7 +11,7 @@ router.use(protect)
 
 router.route('/create-note').post(createNote)
 router.route('/get-user-notes').get(getuserNotes)
-router.route('/update-note/:id').put(updateNote)
+router.route('/update-note/:id').patch(updateNote)
 router.route('/delete-note/:id').delete(deleteNote)
 
 
