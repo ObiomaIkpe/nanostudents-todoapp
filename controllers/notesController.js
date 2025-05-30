@@ -3,16 +3,12 @@ const User = require('../models/userSchema')
 const mongoose = require('mongoose')
 
 
+
 const createNote = async (req, res) => {
 
     try {
         // Get the user ID from the authenticated request (e.g., from JWT payload)
-        const userId = req.user._id;
-
-        // Validate if userId is a valid MongoDB ObjectId
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid user ID format.' });
-        }
+        const userId = req.user.userId        
 
         //check if the user exists in the database
         const userExists = await User.findById(userId);
@@ -36,7 +32,7 @@ const createNote = async (req, res) => {
         const savedNote = await newNote.save();
         res.status(201).json({
             savedNote
-        }); // 201 Created
+        }); 
     }
     catch(error){
         console.log(error)
@@ -50,12 +46,7 @@ const createNote = async (req, res) => {
 const getuserNotes = async(req, res) => {
     try {
         // Get the user ID from the authenticated request
-        const userId = req.user._id; // Or req.userId
-
-        // Validate if userId is a valid MongoDB ObjectId
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid user ID format.' });
-        }
+        const userId = req.user.userId; // Or req.userId
 
         // 1.Find all notes where the 'user' field matches the authenticated userId
         // 2. sort({ createdAt: -1 }) can be added for newest notes first

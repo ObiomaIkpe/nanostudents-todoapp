@@ -43,7 +43,7 @@ const login = async (req, res, next) => {
         }
 
         const token = jwt.sign(
-            {id:validUser._id, isAdmin: validUser.isAdmin}, process.env.JWT_SECRET, {expiresIn: '1d'});
+            {userId:validUser._id, isAdmin: validUser.isAdmin}, process.env.JWT_SECRET, {expiresIn: '1d'});
 
             console.log(token)
 

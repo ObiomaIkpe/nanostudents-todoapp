@@ -1,12 +1,12 @@
 const express = require("express")
 const {createNote, getuserNotes, updateNote, deleteNote} = require("../controllers/notesController")
 
-const {verifyToken} = require("../middlewares/isAdmin")
+const protect = require("../middlewares/protect")
 
 const router = express.Router()
 
 //middleware
-router.use(verifyToken)
+router.use(protect)
 
 
 router.route('/create-note').post(createNote)
