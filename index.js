@@ -1,9 +1,13 @@
 require('dotenv').config()
 const express = require("express")
+const swaggerUi = require('swagger-ui-express')
 const cookieParser = require("cookie-parser")
 const app = express()
+
+
 const authRoutes = require('./routes/authRoutes')
 const noteRoutes = require('./routes/notesRoutes')
+const swaggerOptions = require('./swaggerOptions')
 const connectDB = require('./DB/db')
 
 
@@ -11,8 +15,11 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-    console.log("nowww")
+    res.send("nowww")
 })
+
+//serve swagger UI at any url of your choice, we'll use /api-docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOptions))
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/notes', noteRoutes)
@@ -29,5 +36,6 @@ const start = async () => {
         console.log(error)
     }    
 }
+
 
 start()
