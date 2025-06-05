@@ -107,9 +107,6 @@ const deleteNote = async (req, res) => {
         const noteId = req.params.id;
         const userId = req.user.id; // Authenticated user ID
 
-        // Validate if noteId and userId are valid MongoDB ObjectIds
-        
-
         // Find the note by its ID AND ensure it belongs to the authenticated user before deleting
         const deletedNote = await Note.findOneAndDelete({ _id: noteId, user: userId });
 

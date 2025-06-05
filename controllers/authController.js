@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken')
 
 const signup = async (req, res) => {
     const {username,email, password} = req.body
-
     
         if (!username || !email || !password || username === '' || email === '' || password === '') {
-            return res.status(400).message("error, all fields must be filled!")
+            // return res.status(400).message("error, all fields must be filled!")
+            throw new Error('incomplete data sent, all fields must be filled!')
     }
 
     try {
