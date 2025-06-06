@@ -8,7 +8,7 @@ The `Dockerfile` is a set of instructions Docker uses to build a custom image fo
 FROM node:18 
 
 # 2. Set the working directory inside the container
-WORKDIR /app
+WORKDIR /app 
 
 # 3. Copy the package.json and package-lock.json files into the container
 COPY package*.json ./
@@ -23,7 +23,7 @@ COPY . .
 EXPOSE 3000
 
 # 7. Start the application when the container runs
-CMD [ "npm", "start" ]
+CMD [ "node", "index.js" ]
 ```
 
 ### 📝 Summary of What Happens:
