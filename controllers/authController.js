@@ -1,9 +1,10 @@
 const User = require('../models/userSchema')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const AppError = require('../middlewares/AppError')
 
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
     const {username,email, password} = req.body
     
         if (!username || !email || !password || username === '' || email === '' || password === '') {
@@ -15,11 +16,12 @@ const signup = async (req, res) => {
         const hashedPassword = bcryptjs.hashSync(password, 10);
         const newUser = new User({username, email, password: hashedPassword});
         await newUser.save();
-        res.json({message: 'sign up successful!', newUser}).status(200)
+        res.status(200).json({message: 'sign up successful!', newUser})
     } catch (error) {
         console.log(error)
-        return res.status(400).json("something went wrong", error)
+        next(new AppError('error signing up', 400))
         }
+        
 }
 
 
@@ -27,7 +29,7 @@ const login = async (req, res, next) => {
     const {email, password} = req.body;
 
     if(!email || !password || email === '' || password === ''){
-        return res.status(400).message("error, all fields must be filled!")
+        next(new AppError('error signing up', 400))
     }
 
     try {
